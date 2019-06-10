@@ -28,4 +28,11 @@ select usercode
 		,datediff(from_unixtime(unix_timestamp('${begin_date}','yyyymmdd'),'yyyy-mm-dd'),max(date_str)) as rec_gap
 from tmp.ny_alltrans_breakdown
 
+# 4. trans interval
+# find the interval between 1st/2nd/3rd transaction per customer
 
+select r, avg(interval) from (
+	select a.r, a.member_code, datediff(b.bizdate, a.bizdate) as interval
+	from tmp.ny_tb_trans_rank a join tmp.ny_tb_trans_rank b on a.member_code=b.member_code and a.r=b.r-1 
+) a
+group by r
