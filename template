@@ -22,11 +22,14 @@ select usercode,point,row_number() over(partition by usercode order by updatetim
 
 # 3. time
 # find the gap between "begin_date" and the most recent transaction of a customer.
-# cast date from a int like yyyymmdd to string "yyyy-mm-dd"
+# 3.1 cast date from a int like yyyymmdd to string "yyyy-mm-dd"
 select usercode
         ,max(date_str) as recency
 		,datediff(from_unixtime(unix_timestamp('${begin_date}','yyyymmdd'),'yyyy-mm-dd'),max(date_str)) as rec_gap
 from tmp.ny_alltrans_breakdown
+
+# 3.2 cast date from string "yyyy-mm-dd" to int yyyymmdd
+select cast(from_unixtime(unix_timestamp('${begin_date}','yyyy-mm-dd'),'yyyymmdd') as int)
 
 # 4. trans interval
 # find the interval between 1st/2nd/3rd transaction per customer
