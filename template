@@ -28,6 +28,13 @@ select usercode
 		,datediff(from_unixtime(unix_timestamp('${begin_date}','yyyymmdd'),'yyyy-mm-dd'),max(date_str)) as rec_gap
 from tmp.ny_alltrans_breakdown
 
+there are two ways:
+1. select from_unixtime(unix_timestamp(cast(a.fst_redeem_date as string),'yyyymmdd'),'yyyy-mm-dd') or 
+2. concat(substr(fst_redeem_date,1,4),'-',substr(fst_redeem_date,5,2),'-',substr(fst_redeem_date,7,2))
+
+
+concat(substr(fst_redeem_date,1,4),'-',substr(fst_redeem_date,5,2),'-',substr(fst_redeem_date,7,2))
+
 # 3.2 cast date from string "yyyy-mm-dd" to int yyyymmdd
 select cast(from_unixtime(unix_timestamp('${begin_date}','yyyy-mm-dd'),'yyyymmdd') as int)
 
