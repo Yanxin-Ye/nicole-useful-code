@@ -13,3 +13,11 @@ with Pool(cpu_count()-1) as pool:
 # inputs = [[], [], [], ...]
 with Pool(cpu_count()-1) as pool:
   results = list(pool.starmap(func2, inputs))
+
+# Write to tempfile
+f = tempfile.NamedTemporaryFile()
+res_df = pd.DataFrame(m.run_anomaly_based_kda(write_to_bq=False))
+res_df.to_csv(f.name, mode="a", index=False, header=False)
+f.flush()
+output = pd.read_csv(f.name, names=res_df.columns)
+f.close()
