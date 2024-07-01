@@ -21,3 +21,15 @@ res_df.to_csv(f.name, mode="a", index=False, header=False)
 f.flush()
 output = pd.read_csv(f.name, names=res_df.columns)
 f.close()
+
+
+--CREATE OR REPLACE TABLE `analytics-online-thd.AUGMENT.OUTPUT_FRAMEWORK`
+AS 
+(
+SELECT
+  *
+FROM
+`analytics-online-thd.AUGMENT.OUTPUT_FRAMEWORK`
+FOR SYSTEM_TIME AS OF
+TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 1 HOUR)
+)
