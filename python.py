@@ -22,14 +22,14 @@ f.flush()
 output = pd.read_csv(f.name, names=res_df.columns)
 f.close()
 
-
---CREATE OR REPLACE TABLE `analytics-online-thd.AUGMENT.OUTPUT_FRAMEWORK`
+# Table time travel
+CREATE OR REPLACE TABLE `a`
 AS 
 (
 SELECT
   *
 FROM
-`analytics-online-thd.AUGMENT.OUTPUT_FRAMEWORK`
+`a`
 FOR SYSTEM_TIME AS OF
 TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 1 HOUR)
 )
